@@ -1,0 +1,133 @@
+---
+# CIS NGINX Benchmark v1.0.0
+#
+# 4 Encryption
+# 4.1 TLS / SSL Configuration
+  # 4.1.1 Ensure HTTP is redirected to HTTPS (Scored)
+  ## REVIEW
+  redirect_https:
+    title: 4.1.1 Ensure HTTP is redirected to HTTPS (Scored)
+    meta:
+      webserver: 1
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 4.1.1
+      Remediation: Edit your web server or proxy configuration file to redirect all unencrypted listening ports, such as port 80, using a redirection through the return directive -> return 301 https://$host$request_uri;
+    exit-status: 0
+    exec: curl -s -o /dev/null -w "%{http_code}" http://`hostname` | grep 301
+
+  # 4.1.3 Ensure private key permissions are restricted (Scored)
+  private_key_permissions:
+    title: 4.1.1 Ensure HTTP is redirected to HTTPS (Scored)
+    meta:
+      webserver: 1
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 4.1.3
+      Remediation: Ensure private key permissions are set to 400.
+    exit-status: 0
+    exec: KEY=$(grep -ri "ssl_certificate_key" /etc/nginx/nginx.conf | awk '{print $2}' | sed 's/;//g'); ls -lH $KEY | grep '\-r\-\-\-\-\-\-\-\-'
+
+  # 4.1.4 Ensure only modern TLS protocols are used (Scored)
+  modern_TLS_protocols:
+    title: 4.1.4 Ensure only modern TLS protocols are used (Scored)
+    meta:
+      webserver: 1
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 4.1.4
+      Remediation: Only modern TLS protocols should be enabled in NGINX for all client connections and upstream connections. Removing legacy TLS and SSL protocols (SSL 3.0, TLS 1.0 and 1.1), and enabling emerging and stable TLS protocols (TLS 1.2 and TLS 1.3), ensures users are able to take advantage of strong security capabilities and protects them from insecure legacy protocols.
+    exit-status: 0
+    exec: grep -ir ssl_protocol /etc/nginx | grep 'TLSv1.2\|TLSv1.3' | grep -v 'TLSv1.1' | grep 'TLSv1' | grep 'SSL'
+
+  # 4.1.5 Disable weak ciphers (Scored)
+  ## REVIEW grep -ir ssl_ciphers /etc/nginx/ grep -ir proxy_ssl_ciphers /etc/nginx to match required
+  weak_ciphers:
+    title: 4.1.5 Disable weak ciphers (Scored)
+    meta:
+      webserver: 1
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 4.1.5
+      Remediation: The ssl_ciphers directive should be used to configure the available ciphers on your web server, and the proxy_ssl_ciphers directive should be used to configure the available ciphers for your proxy. Weak ciphers should be disabled based on your company's policy or an industry best practice compliance profile.
+    exit-status: 0
+    exec: grep -ir ssl_prefer_server_ciphers /etc/nginx | grep 'on;'
+
+  # 4.1.6 Ensure custom Diffie-Hellman parameters are used (Scored)
+  dhparam:
+    title: 4.1.6 Ensure custom Diffie-Hellman parameters are used (Scored)
+    meta:
+      webserver: 1
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 4.1.6
+      Remediation: Generate strong DHE (Ephemeral Diffie-Hellman) parameters.
+    exit-status: 0
+    exec: grep ssl_dhparam /etc/nginx/nginx.conf
+
+  # 4.1.7 Ensure Online Certificate Status Protocol (OCSP) stapling is enabled (Scored)
+  ocsp_stapling:
+    title: 4.1.7 Ensure Online Certificate Status Protocol (OCSP) stapling is enabled (Scored)
+    meta:
+      webserver: 1
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 4.1.7
+      Remediation: Enable OCSP stapling.
+    exit-status: 0
+    exec: grep -ir ssl_stapling /etc/nginx | grep 'on;'
+
+  # 4.1.8 Ensure HTTP Strict Transport Security (HSTS) is enabled (Scored)
+  hsts:
+    title: 4.1.8 Ensure HTTP Strict Transport Security (HSTS) is enabled (Scored)
+    meta:
+      webserver: 1
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 4.1.8
+      Remediation: Ensure the below snippet of code can be found in your server configuration for your proxy or web server. This will ensure the HSTS header is set with a validity period of six months, or 15768000 seconds.
+    exit-status: 0
+    exec: grep -ir Strict-Transport-Security /etc/nginx
+
+  # 4.1.10 Ensure upstream server traffic is authenticated with a client certificate (Scored)
+  client_certificate:
+    title: 4.1.10 Ensure upstream server traffic is authenticated with a client certificate (Scored)
+    meta:
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 4.1.10
+      Remediation: You must create a client certificate to be authenticated against and have it signed. Once you have a signed certificate, place the certificate in a location of your choice.
+    exit-status: 0
+    exec: grep -ir proxy_ssl_certificate /etc/nginx
+
+  # 4.1.11 Ensure the upstream traffic server certificate is trusted (Not Scored)
+  server_certificate:
+    title: 4.1.11 Ensure the upstream traffic server certificate is trusted (Not Scored)
+    meta:
+      proxy: 2
+      loadbalancer: 2
+      CIS_ID: 4.1.11
+      Remediation: Obtain the full certificate chain of the upstream server in .pem format. Then reference that file in the location block as part of the proxy_ssl_trusted_certificate directive.
+    exit-status: 0
+    exec: grep -ir proxy_ssl_trusted_certificate /etc/nginx
+  server_certificate:
+    title: 4.1.11 Ensure the upstream traffic server certificate is trusted (Not Scored)
+    meta:
+      proxy: 2
+      loadbalancer: 2
+      CIS_ID: 4.1.11
+      Remediation: Obtain the full certificate chain of the upstream server in .pem format. Then reference that file in the location block as part of the proxy_ssl_trusted_certificate directive.
+    exit-status: 0
+    exec: grep -ir proxy_ssl_verify /etc/nginx
+
+  # 4.1.13 Ensure session resumption is disabled to enable perfect forward security (Scored)
+  ssl_session_tickets:
+    title: 4.1.13 Ensure session resumption is disabled to enable perfect forward security (Scored)
+    meta:
+      webserver: 2
+      proxy: 2
+      loadbalancer: 2
+      CIS_ID: 4.1.13
+      Remediation: Turn off the ssl_session_tickets directive as part of any server block in your nginx configuration.
+    exit-status: 0
+    exec: grep -ir ssl_session_tickets /etc/nginx | grep 'off;'

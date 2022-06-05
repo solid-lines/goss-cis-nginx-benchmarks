@@ -1,0 +1,24 @@
+---
+# CIS NGINX Benchmark v1.0.0
+#
+# 3 Logging
+  # 3.2 Ensure access logging is enabled (Scored)
+  ## TODO
+
+  # 3.3 Ensure error logging is enabled and set to the info logging level (Scored)
+  error_log:
+    title: 3.3 Ensure error logging is enabled and set to the info logging level (Scored)
+    meta:
+      webserver: 1
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 3.3
+      Remediation: Edit /etc/nginx/nginx.conf so the error_log directive is present and not commented out. The error_log should be configured to the logging location of your choice and info logging level.
+    exit-status: 0
+    exec: grep error_log /etc/nginx/nginx.conf | grep info
+
+  # 3.4 Ensure log files are rotated (Scored)
+  ## TODO
+
+  # 3.7 Ensure proxies pass source IP information (Scored)
+  ## TODO
