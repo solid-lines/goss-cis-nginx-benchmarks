@@ -5,6 +5,7 @@
 # 4.1 TLS / SSL Configuration
   # 4.1.1 Ensure HTTP is redirected to HTTPS (Scored)
   ## REVIEW
+command:
   redirect_https:
     title: 4.1.1 Ensure HTTP is redirected to HTTPS (Scored)
     meta:

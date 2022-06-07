@@ -4,6 +4,7 @@
 # 5 Request Filtering and Restrictions
 # 5.2 Request Limits
   # 5.2.1 Ensure timeout values for reading the client header and body are set correctly (Scored)
+command:
   client_body_timeout:
     title: 5.2.1 Ensure timeout values for reading the client header and body are set correctly (Scored)
     meta:

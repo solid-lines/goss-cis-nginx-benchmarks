@@ -6,6 +6,7 @@
   ## TODO
 
   # 3.3 Ensure error logging is enabled and set to the info logging level (Scored)
+command:
   error_log:
     title: 3.3 Ensure error logging is enabled and set to the info logging level (Scored)
     meta:
