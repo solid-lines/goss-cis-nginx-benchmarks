@@ -60,7 +60,7 @@ command:
       CIS_ID: 2.2.2
       Remediation: Use the passwd command to lock the nginx service account -> passwd -l <nginx_user>
     exit-status: 0
-    exec: bash ../scripts/2.2.2.sh
+    exec: bash ./scripts/2.2.2.sh
 
   # 2.2.3 Ensure the NGINX service account has an invalid shell (Scored)
   invalid_shell:
@@ -85,7 +85,7 @@ command:
       CIS_ID: 2.3.1
       Remediation: Run the following command to ensure ownership and group ownership is set to root -> chown -R root:root /etc/nginx
     exit-status: 0
-    exec: stat /etc/nginx | grep root | grep 755
+    exec: stat /etc/nginx | grep root | grep 075
 
   # 2.3.2 Ensure access to NGINX directories and files is restricted (Scored)
   access_restricted:
@@ -132,7 +132,7 @@ command:
       CIS_ID: 2.4.3
       Remediation: Find the HTTP or server block of your nginx configuration, and add the keepalive_timeout directive. Set it to 10 seconds or less, but not 0.
     exit-status: 0
-    exec: bash ../scripts/2.4.3.sh
+    exec: bash ./scripts/2.4.3.sh
 
   # 2.4.4 Ensure send_timeout is set to 10 seconds or less, but not 0 (Scored)
   send_timeout:
@@ -144,7 +144,7 @@ command:
       CIS_ID: 2.4.4
       Remediation: Find the HTTP or server block of your nginx configuration, and add the send_timeout directive. Set it to 10 seconds or less, but not 0.
     exit-status: 0
-    exec: bash ../scripts/2.4.4.sh
+    exec: bash ./scripts/2.4.4.sh
 
 # 2.5 Information Disclosure
   # 2.5.1 Ensure server_tokens directive is set to `off` (Scored)
@@ -181,3 +181,4 @@ command:
 
   # 2.5.4 Ensure the NGINX reverse proxy does not enable information disclosure (Scored)
   ## TODO
+

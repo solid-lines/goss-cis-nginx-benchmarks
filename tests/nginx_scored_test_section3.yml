@@ -19,7 +19,34 @@ command:
     exec: grep error_log /etc/nginx/nginx.conf | grep info
 
   # 3.4 Ensure log files are rotated (Scored)
-  ## TODO
+  log_files_rotated:
+    title: 3.4 Ensure log files are rotated (Scored)
+    meta:
+      webserver: 1
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 3.4
+      Remediation: Create /etc/logrotate.d/nginx . You should always comply with your organizational log retention policy.
+    exit-status: 0
+    exec: ls /etc/logrotate.d/nginx
 
   # 3.7 Ensure proxies pass source IP information (Scored)
-  ## TODO
+  proxies_source_ip_info:
+    title: 3.7 Ensure proxies pass source IP information (Scored)
+    meta:
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 3.7
+      Remediation: Ensure your proxy or load balancer will forward information about the client and the proxy to the application, you must set the below headers in your location block: proxy_set_header X-Real-IP $remote_addr;  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    exit-status: 0
+    exec: grep -ri 'proxy_set_header X-Real-IP $remote_addr;' /etc/nginx
+  proxies_source_ip_info:
+    title: 3.7 Ensure proxies pass source IP information (Scored)
+    meta:
+      proxy: 1
+      loadbalancer: 1
+      CIS_ID: 3.7
+      Remediation: Ensure your proxy or load balancer will forward information about the client and the proxy to the application, you must set the below headers in your location block: proxy_set_header X-Real-IP $remote_addr;  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    exit-status: 0
+    exec: grep -ri 'proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' /etc/nginx
+
